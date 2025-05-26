@@ -6,6 +6,9 @@ const expressLayout = require('express-ejs-layouts')
 
 const PORT = process.env.PORT || 3000
 
+//Assests
+app.use(express.static('public'))
+
 
 //rendering pages(url)
 app.get('/',(req,res)=>{

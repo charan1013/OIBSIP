@@ -1,0 +1,41 @@
+body {
+  font-family: "Lato", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  color: #232323;
+  height: 4000px;
+}
+
+nav {
+  background: #4A966A;
+  box-shadow: 0 2px 4px rgba(245, 255, 252, 0.49);
+}
+
+nav li:last-child a {
+  background: #4A966A;
+}
+
+nav li:last-child a:hover {
+  background: rgba(233, 234, 234, 0.4784313725);
+}
+
+nav li a {
+  transition: all 0.3s ease-in-out;
+}
+nav li a:hover {
+  color: #FE5F1E;
+}
+
+.size {
+  background: #4A966A;
+}
+
+.add-to-cart {
+  border: 2px solid #FE5F1E;
+  color: #FE5F1E;
+  transition: all 0.3s ease-in-out;
+}
+.add-to-cart:hover {
+  background: #FE5F1E;
+  border-color: #fff;
+  color: #fff;
+}
