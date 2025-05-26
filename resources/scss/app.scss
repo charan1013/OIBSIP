@@ -10,7 +10,7 @@ body{
 }
 nav {
   background: $secondary; // or $pure or a hex like #fff5ee
-  box-shadow: 0 2px 4px rgba(245, 255, 252, 0.49); // optional shadow
+  box-shadow: 0 2px 4px rgba(255, 245, 245, 0.899); // optional shadow
 }
 
 
@@ -44,4 +44,27 @@ nav li a{
         border-color: $pure ;
         color: $pure;
     }
+}
+.btn-primary{
+  background: $primary;
+  transition: $smooth;
+  &:hover{
+    background: $primary-hover;
+  }
+}
+
+section.cart{
+  background: $gray;
+}
+.amount{
+  color: $primary;
+}
+
+section.login{
+  background: $secondary;
+  min-hight: calc(100vh-86px);
+  a{
+    color: $primary;
+  }
+
 }

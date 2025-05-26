@@ -7,7 +7,7 @@ body {
 
 nav {
   background: #4A966A;
-  box-shadow: 0 2px 4px rgba(245, 255, 252, 0.49);
+  box-shadow: 0 2px 4px rgba(255, 245, 245, 0.899);
 }
 
 nav li:last-child a {
@@ -38,4 +38,25 @@ nav li a:hover {
   background: #FE5F1E;
   border-color: #fff;
   color: #fff;
+}
+
+.btn-primary {
+  background: #FE5F1E;
+  transition: all 0.3s ease-in-out;
+}
+.btn-primary:hover {
+  background: #b23301;
+}
+
+section.cart {
+  background: #ccc;
+}
+
+.amount {
+  color: #FE5F1E;
+}
+
+section.login {
+  background: #4A966A;
+  min-hight: 100vh;
 }
