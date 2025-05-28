@@ -4,6 +4,11 @@
       <h2 class="text-xl font-bold mb-4 text-center text-gray-800">Login to Your Account</h2>
 
       <form action="/login" method="POST" class="space-y-4">
+
+           <% if (messages.error) { %>
+    <span class="text-red-500 text-sm"><%= messages.error %></span>
+      <% } %>
+      
         <div>
           <label class="block text-gray-700 font-medium mb-1">Email</label>
           <input
