@@ -19,9 +19,18 @@
   <!-- Right side: menu -->
   <div>
     <ul class="flex items-center space-x-6 m-0 p-0 list-none">
-      <li><a href="#">Menu</a></li>
+      <li><a href="/">Menu</a></li>
 
       <% if(user) { %>
+        <% if(user.role === 'admin'){ %>
+            <li class="ml-6">
+    <a href="/admin/orders">Track Orders</a>
+</li>
+<% } else { %>
+       <li class="ml-6">
+    <a href="/customer/orders">My Orders</a>
+</li>
+<% } %>
         <li class="ml-6">
         <form id="logout"  action="/logout" method="POST">
                 <a onclick="document.getElementById('logout').submit()" href="#">Logout</a>
@@ -30,8 +39,9 @@
         <% } else{ %>
       <li><a href="/register">Register</a></li>
       <li><a href="/login">Login</a></li>
-      <li><a href="#">Admin Login</a></li>
+      <li><a href="/login">Admin Login</a></li>
       <% } %>
+
       <li>
         <a href="/cart" class="inline-block px-4 py-2 rounded-full flex items-center" >
           <span id="cartCounter" class="text-white font-bold pr-2"><%=  session.cart ? session.cart.totalQty :' ' %></span>
