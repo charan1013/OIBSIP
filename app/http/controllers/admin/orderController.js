@@ -14,8 +14,8 @@ function orderController() {
                     return res.render('admin/orders');
                 }
             } catch (err) {
-                console.error(err);
-                return res.status(500).send('Server error');
+                console.error("Failed to fetch orders:", err);
+                return res.status(500).send('Something went wrong');
             }
         }
     };
