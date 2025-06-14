@@ -17,7 +17,7 @@ const Emitter = require('events');
 
 
 // Database Connection
-const mongoUrl = 'mongodb://localhost:27017/pizza';
+const mongoUrl = process.env.MONGO_CONNECTION_URL;
 mongoose.connect(mongoUrl);
 
 const connection = mongoose.connection;
@@ -77,7 +77,15 @@ app.set('view engine', 'ejs');
 
 
 const initRoutes = require('./routes/web.js');
+
+// Initialize all your defined routes
 initRoutes(app);
+
+// 404 handler (should come after all route definitions)
+app.use((req, res) => {
+  res.status(404).render('errors/404');
+});
+
 
 
 // Start Server 
