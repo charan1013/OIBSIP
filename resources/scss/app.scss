@@ -10,21 +10,21 @@ body{
     -webkit-font-smoothing: antialiased;
 
     color: $dark;
-    height: 4000px;
+    height: 1000px;
 }
 nav {
-  background: $secondary; // or $pure or a hex like #fff5ee
-  box-shadow: 0 2px 4px rgba(255, 245, 245, 0.899); // optional shadow
+  background-color: $secondary;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); 
+  z-index: 1000; 
+  position: relative;
+  transition: box-shadow 0.3s ease-in-out;
 }
-
-
-
 nav li:last-child a {
-  background: /* replace with actual color, e.g. */ #4A966A;
+  background:  #FFFFFF;
 }
 
 nav li:last-child a:hover {
-  background: /* replace with actual hover color, e.g. */ #e9eaea7a;
+  background:  #e9eaea7a;
 }
 
 
@@ -38,30 +38,31 @@ nav li a{
 }
 .size{
     background: $secondary;
+    color:#cfd7df;
 }
 .add-to-cart{
     border: 2px solid $primary;
     color: $primary;
     transition: $smooth;
     &:hover{
-        background: $primary;
+        background: $dark;
         border-color: $pure ;
         color: $pure;
     }
 }
 .btn-primary{
-  background: $primary;
+  background: $button;
   transition: $smooth;
   &:hover{
     background: $primary-hover;
   }
 }
 
-section.cart{
-  background: $gray;
-}
+// section.cart{
+//   background: bg-gradient-to-b from-yellow-50 to-red-50;
+// }
 .amount{
-  color: $primary;
+  color: black;
 }
 
 section.login{
@@ -69,17 +70,25 @@ section.login{
   min-height: calc(100vh - 86px);
 
   a{
-    color: $primary;
+    color: $secondary;
+    
   }
+.reg{
+  color: $secondary;
+}
+.log{
+  color: $secondary;
+}
 
 }
 .noty_theme_mint {
   border-radius: 50px !important;
   padding-left: 8px !important;
+  
 }
 
 a.link {
-  color: $primary;
+  color: olivedrab;
 }
 
 //order status
@@ -167,11 +176,11 @@ a.link {
 
 // Current status
 .status-box ul li.current span {
-    color: $primary;
+    color: $secondary;
 }
 
 .status-box ul li.current span:after {
-    background: $primary;
+    background: $secondary;
 }
 
 .status-box ul li small {
@@ -179,4 +188,100 @@ a.link {
     font-size: 14px;
     margin-top: 8px;
 }
+
+
+@media(max-width:1060px) {
+    .container {
+        max-width: 90%;
+    }
+    table {
+       display: block;
+       overflow-x: auto;
+       white-space: nowrap;
+    }
+}
+
+@media(max-width: 768px) {
+    .status-box ul li span:before {
+        font-size: 34px;
+    }
+    table {
+       display: block;
+       overflow-x: auto;
+       white-space: nowrap;
+    }
+
+
+  }
+  @media(max-width: 768px) {
+    .status-box ul li span:before {
+        font-size: 34px;
+    }
+}
+.StripeElement {
+    box-sizing: border-box;
+    width: 50%;
+    margin-left: auto;
+    height: 40px;
+    padding: 10px 12px;
+
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background-color: white;
+
+    box-shadow: 0 1px 3px 0 #e6ebf1;
+    -webkit-transition: box-shadow 150ms ease;
+    transition: box-shadow 150ms ease;
+  }
+
+  .StripeElement--focus {
+    box-shadow: 0 1px 3px 0 #cfd7df;
+  }
+
+  .StripeElement--invalid {
+    border-color: #fa755a;
+  }
+
+  .StripeElement--webkit-autofill {
+    background-color: #fefde5 !important;
+  }
+
+ .remove-from-cart{
+    border: 2px solid $primary;
+    color: $primary;
+    transition: $smooth;
+    &:hover{
+        background: $dark;
+        border-color: $pure ;
+        color: $pure;
+    }
+}
+
+.cart-scroll {
+  max-height: 500px;
+  overflow-y: auto;
+
+  // Webkit browsers
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $secondary;
+    border-radius: 10px;
+    &:hover {
+      background-color: $primary-hover;
+    }
+  }
+
+  // Firefox support
+  scrollbar-width: thin;
+  scrollbar-color: $secondary transparent;
+}
+
+
 

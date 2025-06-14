@@ -4,6 +4,10 @@ const  cartController = require('../app/http/controllers/customers/cartControlle
 const  orderController = require('../app/http/controllers/customers/orderController')
 const  AdminOrderController = require('../app/http/controllers/admin/orderController')
 const  statusController = require('../app/http/controllers/admin/statusController')
+const  pizzaController = require('../app/http/controllers/admin/pizzaController')
+const upload = require('../app/config/upload')
+
+
 
 //Middlewares
 const guest = require('../app/http/middleware/guest')
@@ -44,6 +48,8 @@ app.get('/customer/order/:id', auth, orderController().show)
 //Admin
 app.get('/admin/orders',admin, AdminOrderController().index)
 app.post('/admin/order/status',admin, statusController().update)
+app.get('/admin/addpizza', admin, pizzaController().addPizzaPage)
+app.post('/admin/addpizza', admin, upload.single('image'), pizzaController().addPizza)
 
 }
 

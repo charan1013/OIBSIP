@@ -1,52 +1,56 @@
 function cartController() {
-
     return {
-
         index(req, res) {
-            res.render('customers/cart')
+            res.render('customers/cart');
         },
 
         update(req, res) {
+            const { _id, name, price, size, image, action } = req.body;
 
-            // let cart = {
-
-            //     items: {
-            //         pizzaId: { item: pizzaObject, qty:0},
-            //         pizzaId: { item: pizzaObject, qty:0},
-            //         pizzaId: { item: pizzaObject, qty:0},
-            
-            //     },
-            //      totalQty: 0,
-            //      totalPrice: 0
-            // }
-
+            // cart initialization
             if (!req.session.cart) {
                 req.session.cart = {
                     items: {},
                     totalQty: 0,
                     totalPrice: 0
+                };
+            }
+
+            const cart = req.session.cart;
+
+            // Get current item or initialize if not exists
+            let cartItem = cart.items[_id];
+
+            if (action === 'increase') {
+                if (!cartItem) {
+                    cart.items[_id] = {
+                        item: { _id, name, price, size, image },
+                        qty: 1
+                    };
+                } else {
+                    cart.items[_id].qty += 1;
+                }
+
+                cart.totalQty += 1;
+                cart.totalPrice += price;
+            }
+
+            if (action === 'decrease' && cartItem) {
+                cartItem.qty -= 1;
+                cart.totalQty -= 1;
+                cart.totalPrice -= price;
+
+                if (cartItem.qty <= 0) {
+                    delete cart.items[_id];
                 }
             }
 
-            let cart = req.session.cart
-            console.log(req.body)
-
-            if (!cart.items[req.body._id]) {
-                cart.items[req.body._id] = {
-                    item: req.body,
-                    qty: 1
-                }
-
-            } else {
-                cart.items[req.body._id].qty = cart.items[req.body._id].qty + 1
-            }
-
-            cart.totalQty = cart.totalQty + 1
-            cart.totalPrice = cart.totalPrice + req.body.price
-
-            return res.json({ totalQty: req.session.cart.totalQty })
+            return res.json({
+                totalQty: cart.totalQty,
+                totalPrice: cart.totalPrice,
+                items: cart.items
+            });
         }
-
     }
 }
 

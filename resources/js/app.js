@@ -2,6 +2,7 @@ import axios from 'axios';
 import Noty from 'noty';
 import { initAdmin } from './admin';
 import moment from 'moment';
+import { initStripe } from './stripe';
 
 const addToCart = document.querySelectorAll('.add-to-cart');
 const cartCounter = document.querySelector('#cartCounter');
@@ -74,6 +75,10 @@ if (order) {
     updateStatus(order);
 }
 
+
+initStripe()
+
+
 // Socket setup
 const socket = io();
 
@@ -86,7 +91,6 @@ if (adminAreaPath.includes('admin')) {
     initAdmin(socket);
     socket.emit('join', 'adminRoom');
 }
-
 socket.on('orderUpdated', data => {
     const updatedOrder = { ...order };
     updatedOrder.updatedAt = moment().format();

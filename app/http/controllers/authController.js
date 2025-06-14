@@ -15,7 +15,10 @@ function authController() {
         postLogin(req, res, next) {
             const { email, password } = req.body;
 
-            // Validate request
+            
+            const existingCart = req.session.cart;
+
+            
             if (!email || !password) {
                 req.flash('error', 'All fields are required');
                 return res.redirect('/login');
@@ -23,20 +26,27 @@ function authController() {
 
             passport.authenticate('local', (err, user, info) => {
                 if (err) {
-                    req.flash('error', info.message);
+                    req.flash('error', info.message || 'Authentication error');
                     return next(err);
                 }
                 if (!user) {
-                    req.flash('error', info.message);
+                    req.flash('error', info.message || 'Invalid credentials');
                     return res.redirect('/login');
                 }
 
                 req.logIn(user, (err) => {
                     if (err) {
-                        req.flash('error', info.message);
+                        req.flash('error', info.message || 'Login failed');
                         return next(err);
                     }
 
+                    
+                    if (existingCart) {
+                        req.session.cart = existingCart;
+                    }
+
+                
+                    req.flash('success', 'Login successful!');
                     return res.redirect(_getRedirectUrl(req));
                 });
             })(req, res, next);
@@ -77,7 +87,10 @@ function authController() {
                 });
 
                 await user.save();
-                return res.redirect('/');
+
+               
+                req.flash('success', 'Registration successful! You can now log in.');
+                return res.redirect('/login');
 
             } catch (err) {
                 console.error(err);
@@ -91,6 +104,7 @@ function authController() {
                 if (err) {
                     return next(err);
                 }
+                req.flash('success', 'Logged out successfully.');
                 return res.redirect('/login');
             });
         }

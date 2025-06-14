@@ -1,0 +1,58 @@
+<section class="orders bg-gradient-to-b from-yellow-50 to-red-50 min-h-screen py-12">
+  <div class="container mx-auto px-4 max-w-4xl">
+    <h1 class="text-3xl font-extrabold text-red-600 mb-8 text-center border-b-4 border-red-500 pb-2">Add New Pizza</h1>
+
+    <% if (locals.error) { %>
+      <div class="bg-red-100 border-l-4 border-red-500 text-red-800 px-4 py-3 mb-4 shadow-sm">
+        <%= error %>
+      </div>
+    <% } %>
+
+    <% if (locals.success) { %>
+      <div class="bg-green-100 border-l-4 border-green-500 text-green-800 px-4 py-3 mb-4 shadow-sm">
+        <%= success %>
+      </div>
+    <% } %>
+
+    <form action="/admin/addpizza" method="POST" enctype="multipart/form-data" class="bg-white shadow-lg p-6 transition-all duration-300">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <div class="space-y-6">
+          <div>
+            <label class="block text-sm font-semibold text-gray-800 mb-1">Pizza Name</label>
+            <input type="text" name="name" placeholder="Enter pizza name..." class="w-full border px-4 py-2 focus:ring-2 focus:ring-red-400 focus:outline-none" required>
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-800 mb-1">Price (₹)</label>
+            <input type="number" name="price" placeholder="Eg: 199" class="w-full border px-4 py-2 focus:ring-2 focus:ring-red-400 focus:outline-none" required>
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-800 mb-1">Size</label>
+            <select name="size" class="w-full border px-4 py-2 focus:ring-2 focus:ring-red-400 focus:outline-none" required>
+              <option value="">Select Size</option>
+              <option value="small">Small</option>
+              <option value="medium">Medium</option>
+              <option value="large">Large</option>
+            </select>
+          </div>
+        </div>
+
+        
+        <div class="flex flex-col justify-center space-y-6">
+          <div>
+            <label class="block text-sm font-semibold text-gray-800 mb-1">Upload Image</label>
+            <input type="file" name="image" accept="image/*" class="w-full text-sm text-gray-600 bg-gray-50 border border-dashed border-gray-400 px-4 py-3 rounded-lg" required>
+          </div>
+          <div class="text-center pt-4">
+            <button type="submit" class="btn-primary text-white font-semibold px-8 py-2 rounded-full shadow-lg tracking-wide">
+              Add Pizza
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </form>
+  </div>
+</section>

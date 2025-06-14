@@ -1,54 +1,118 @@
-<section class="orders light-section">
-    <div class="container mx-auto pt-12 px-10">
-        <h1 class="font-bold text-lg mb ml-8">All Orders</h1>
+<section class="orders light-section bg-gradient-to-b from-yellow-50 to-red-50 py-12 min-h-screen">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <h1 class="font-bold text-2xl text-gray-800 mb-8 mt-10 ml-4 inline-block border-b-8 border-red-500 pb-1">
+   Your Order History
+</h1>
 
-        <div class="flex justify-center mt-4 mb-4 px-8">
-            
-            <% if(messages.success) { %>
-            <div id="success-alert" class="flex items-center bg-green-500 text-white text-sm font-bold px-4 py-3 rounded w-full max-w-3xl">
-                <svg class="fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                    <path d="..." />
-                </svg>
-                <p class="text-left"><%= messages.success   %></p>
+
+    <% if(messages.success) { %>
+    <div class="flex justify-center mb-6">
+      <div id="success-alert" class="flex items-center bg-green-500 text-white text-sm font-bold px-4 py-3 shadow-md w-full max-w-3xl">
+        <svg class="fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+          <path d="..." />
+        </svg>
+        <p><%= messages.success %></p>
+      </div>
+    </div>
+    <% } %>
+    <% if(orders.length) { %>
+    <div class="flex flex-col gap-6">
+      <% orders.forEach(order => { %>
+      <div class="bg-white shadow-md p-6 border border-gray-200">
+        <div>
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-sm font-semibold text-gray-700">Order ID</span>
+            <a href="/customer/order/<%= order._id %>" class="text-red-600 text-sm hover:underline font-medium"><%= order._id %></a>
+          </div>
+
+          <div class="text-sm text-gray-600 mb-1">
+            <strong>Customer:</strong> <%= order.customerId.name %>
+          </div>
+          <div class="text-sm text-gray-600 mb-1">
+            <strong>Phone:</strong> <%= order.phone %>
+          </div>
+          <div class="text-sm text-gray-600 mb-1">
+            <strong>Address:</strong> <%= order.address %>
+          </div>
+          <div class="text-sm text-gray-600 mb-1">
+            <strong>Time:</strong> <%= moment(order.createdAt).format('hh:mm A, MMM DD') %>
+          </div>
+          <div class="text-sm text-gray-600 mb-3">
+            <strong>Payment:</strong>
+            <span class="inline-block px-3 py-1 text-sm rounded-full 
+              <%= order.paymentType === 'cod' ? 'bg-yellow-100 text-yellow-800' : 'bg-blue-100 text-blue-800' %>">
+              <%= order.paymentType.toUpperCase() %>
+            </span>
+          </div>
+
+          <div class="text-sm mb-4">
+            <strong>Status:</strong>
+            <span class="inline-block px-3 py-1 text-sm rounded-full font-semibold
+              <%= order.status === 'completed' ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700' %>">
+              <%= order.status.charAt(0).toUpperCase() + order.status.slice(1) %>
+            </span>
+          </div>
+
+          <button onclick="toggleItems('<%= order._id %>')" class="text-sm text-orange-600 font-semibold hover:underline">
+            Show Items
+          </button>
+
+         
+          <div id="items-<%= order._id %>" class="hidden mt-4 space-y-3">
+            <% let totalAmount = 0; %>
+            <% for (let itemId in order.items) { 
+                let item = order.items[itemId];
+                let itemTotal = item.qty * item.item.price;
+                totalAmount += itemTotal;
+            %>
+            <div class="flex items-center gap-4 border p-3">
+              <img src="/img/<%= item.item.image %>" alt="<%= item.item.name %>" class="w-16 h-16 object-cover rounded" />
+              <div class="flex-1">
+                <p class="font-medium text-gray-800"><%= item.item.name %></p>
+                <p class="text-sm text-gray-600">Qty: <%= item.qty %> x ₹<%= item.item.price %></p>
+              </div>
+              <div class="text-sm font-bold text-gray-700">
+                ₹<%= itemTotal %>
+              </div>
             </div>
             <% } %>
+
+
+              <div class="text-right mt-4 text-gray-700 text-sm mb-2">
+            <span>Delivery Charges</span>
+            <span>₹25</span>
+          </div>
+          <div class="text-right mt-4 text-gray-700 text-sm mb-2">
+            <span>Taxes</span>
+            <span>₹20</span>
+          </div>
+            <div class="text-right mt-4 text-base font-bold text-gray-800">
+              Total: ₹<%= totalAmount +20+25%>
+            </div>
+          </div>
         </div>
 
-        <table class="w-full table-auto bg-white">
-            <thead>
-                <tr>
-                    <th class="px-4 py-2 text-left border-b">Orders</th>
-                    <th class="px-4 py-2 text-left border-b">Phone</th>
-                    <th class="px-4 py-2 text-left border-b">Address</th>
-                    <th class="px-4 py-2 text-left border-b">Time</th>
-                    <th class="px-4 py-2 text-left border-b">Payment Type</th>
-                </tr>
-            </thead>
-            <tbody>
-
-                <% if(orders.length){ %>
-                    <% orders.forEach((order)=> { %>
-
-                <tr>
-                    <td class="border px-4 py-2">
-                        <a class="link text-blue-600 hover:underline" href="/customer/order/<%= order._id %>"><%= order._id %></a>
-                    </td>
-                    <td class="border px-4 py-2"><%= order.phone %></td>
-            
-                    <td class="border px-4 py-2"><%= order.address %></td>
-                    <td class="border px-4 py-2"><%= moment(order.createdAt).format('hh:mm A') %></td>
-                    <td class="border px-4 py-2"><%= order.paymentType %></td>
-                </tr>
-             <% }) %>
-
-
-                <% } else {  %>
-                    <tr>
-                        <td class="p-4"><span>No orders found!</span></td>
-                    </tr>
-                <% } %>
-                
-            </tbody>
-        </table>
+        <!-- Track Button -->
+        <div class="mt-5">
+          <a href="/customer/order/<%= order._id %>" class="block text-center text-white font-bold py-2 rounded btn-primary">
+            Track Order
+          </a>
+        </div>
+      </div>
+      <% }) %>
     </div>
+    <% } else { %>
+    <div class="text-center py-10 text-gray-500 font-semibold text-lg">
+      No orders found! <br />
+      Start exploring our delicious menu now 
+    </div>
+    <% } %>
+  </div>
 </section>
+
+<script>
+  function toggleItems(orderId) {
+    const el = document.getElementById('items-' + orderId);
+    el.classList.toggle('hidden');
+  }
+</script>

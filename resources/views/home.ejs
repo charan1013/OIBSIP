@@ -1,65 +1,129 @@
-<section class="hero py-20 bg-white">
+<section class="hero py-20 bg-gradient-to-b from-yellow-50 to-red-50">
   <div class="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between">
-    
-    <!-- Left Side: Text -->
+   
     <div class="md:w-1/2 text-center md:text-left mb-10 md:mb-0">
-      <h1 class="text-4xl font-bold mb-4 ml-8">Pizza Delivery</h1>
+      <h1 class="text-4xl font-bold mb-4 ml-8 inline-block border-b-8 border-red-500 pb-1">
+  Pizza Delivery
+</h1>
+
+
       <p class="text-lg text-gray-600 ml-8"><em>Get your favorite pizza delivered fast and fresh to your doorstep!</em></p>
       <button class="px-6 py-2 rounded-full text-white font-bold mt-4 btn-primary ml-8">
-  Order Now
-</button>
-
+       <a href="#menu">Order Now</a>
+      </button>
     </div>
 
-    <!-- Right Side: Full Image -->
+   
     <div class="md:w-1/2">
       <img src="/img/landing.jpg" alt="Landing" class="w-full h-full object-cover">
     </div>
-
   </div>
 </section>
-<section class="menu container mx-auto py-8 mb-8 pl-8">
- <h1 class="text-2xl font-bold mb-8 pl-6">Pizza Offerings</h1>
- <div class="grid grid-cols-4  grid-cols-4 gap-x-12 gap-y-16">
 
+<section id="menu" class="menu container mx-auto py-8 mb-8 pl-8 bg-gradient-to-b from-yellow-50 to-red-50">
+<h1 class="text-3xl font-bold inline-block border-b-8 border-red-500 pb-1 ml-4">
+  Pizza Offerings
+</h1><br><br>
 
-     <% pizzas.forEach(function(pizza){ %>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-12 gap-y-16">
+    <% pizzas.forEach(function(pizza){ %>
+   <div class="w-64 flex flex-col items-center">
+  <img class="h-40 mb-4 mx-auto" src="/img/<%= pizza.image %>" alt="Pizza">
+  <div class="text-center w-full">
+    <h2 class="mb-4 text-lg font-bold"><%= pizza.name %></h2>
 
-          <div class="w-64">
-        <img class="h-40 mb-4 mx-auto"  src="/img/<%= pizza.image %>" alt="Pizza">
-        <div class="text-center">
-            <h2 class="mb-4 text-lg"><%= pizza.name %></h2>
-            <span class="size py-1 px-4 rounded-full uppercase text-xs"><%= pizza.size %></span>
-            <div class="flex items-center justify-around mt-6">
-                <span class="font-bold text-lg">₹<%= pizza.price %></span>
-            <button data-pizza="<%= JSON.stringify(pizza) %>"  class="add-to-cart py-1 px-6 rounded-full flex items-center font-bold">
-                <span>+</span>
-                <span class="ml-4">ADD</span>
-            </button
-            ></div>
-        </div>
+   
+    <div class="flex justify-between px-2 mb-4">
+      <span class="size py-2 px-3 rounded-full uppercase font-bold text-xs inline-block"><%= pizza.size %></span>
+      <span class="font-bold text-2xl block">₹<%= pizza.price %></span>
     </div>
 
-     <%}) %>
+    <div class="flex items-center gap-2 justify-center mt-2">
+  
+  <button data-pizza='<%= JSON.stringify(pizza) %>' class="add-to-cart px-5 py-1 rounded-full flex justify-center items-center font-semibold bg-green-500 text-white text hover:bg-green-600 transition shadow-md">
+    ADD 
+  </button>
 
-    <div class="w-64">
-        <img class="h-40 mb-4 mx-auto"  src="/img/pizza.png" alt="Pizza">
-        <div class="text-center">
-            <h2 class="mb-4 text-lg">Margherita</h2>
-            <span class="size py-1 px-4 rounded-full uppercase text-xs">small</span>
-            <div class="flex items-center justify-around mt-6">
-                <span class="font-bold text-lg">₹250</span>
-            <button class="add-to-cart py-1 px-6 rounded-full flex items-center font-bold">
-                <span>+</span>
-                <span class="ml-4">ADD</span>
-            </button
-            ></div>
-        </div>
-    </div>
-     
-    </div>
-    
+
+  <span data-id="<%= pizza._id %>" class="pizza-qty hidden w-6 text-center font-semibold text-gray-800 text-sm">1</span>
+
+  
+  <button data-pizza='<%= JSON.stringify(pizza) %>' class="remove-from-cart px-3 py-1 rounded-full flex justify-center items-center font-semibold bg-gray-500 text-white text hover:bg-black-600 transition hidden shadow-md">
+    REMOVE
+  </button>
 </div>
 
+  </div>
+</div>
 
+    <% }) %>
+  </div>
 </section>
+
+
+
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const updateCartCounter = (totalQty) => {
+      const cartCounter = document.querySelector('#cartCounter');
+      if (cartCounter) {
+        cartCounter.innerText = totalQty;
+      }
+    };
+
+    // Function to update the individual pizza qty display
+    const updatePizzaQtyDisplay = (pizzaId, qty) => {
+      const qtySpan = document.querySelector(`.pizza-qty[data-id='${pizzaId}']`);
+      if (qtySpan) {
+        qtySpan.innerText = qty;
+        qtySpan.classList.toggle('hidden', qty <= 0);
+      }
+    };
+
+    // ADD TO CART
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+      button.addEventListener('click', () => {
+        const pizza = JSON.parse(button.dataset.pizza);
+        fetch('/update-cart', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ...pizza, action: 'increase' })
+        })
+        .then(res => res.json())
+        .then(data => {
+          const removeBtn = button.parentElement.querySelector('.remove-from-cart');
+          if (removeBtn) removeBtn.classList.remove('hidden');
+
+          updateCartCounter(data.totalQty);
+
+          const qty = data.items?.[pizza._id]?.qty || 1;
+          updatePizzaQtyDisplay(pizza._id, qty);
+        });
+      });
+    });
+
+    // REMOVE FROM CART
+    document.querySelectorAll('.remove-from-cart').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const pizza = JSON.parse(btn.dataset.pizza);
+        fetch('/update-cart', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ...pizza, action: 'decrease' })
+        })
+        .then(res => res.json())
+        .then(data => {
+          const qty = data.items?.[pizza._id]?.qty || 0;
+          updateCartCounter(data.totalQty);
+          updatePizzaQtyDisplay(pizza._id, qty);
+
+          if (qty === 0) {
+            btn.classList.add('hidden');
+          }
+        });
+      });
+    });
+  });
+</script>

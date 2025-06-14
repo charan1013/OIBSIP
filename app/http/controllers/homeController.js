@@ -6,8 +6,8 @@ function homeController() {
             try {
                 const pizzas = await Menu.find()
                 
-                console.log("Fetched Pizzas:", pizzas)  // Debug: Log pizzas
-                console.log("Session Info:", req.session) // Debug: Log session
+                console.log("Fetched Pizzas:", pizzas)  
+                console.log("Session Info:", req.session) 
 
                 return res.render('home', { pizzas })
             } catch (err) {
@@ -19,3 +19,4 @@ function homeController() {
 }
 
 module.exports = homeController
+homeController

@@ -3,12 +3,8 @@ const express = require('express');
 const app = express();
 const ejs = require('ejs');
 const path = require('path');
- // <-- CREATE HTTP SERVER
-const socketIO = require('socket.io'); // <-- IMPORT SOCKET.IO
-// <-- INITIALIZE WITH SERVER
-
+const socketIO = require('socket.io'); 
 const PORT = process.env.PORT || 3000;
-
 const expressLayout = require('express-ejs-layouts');
 const mongoose = require('mongoose');
 const session = require('express-session');
@@ -18,7 +14,9 @@ const passport = require('passport');
 const Emitter = require('events');
 
 
-// -------------------- Database Connection --------------------
+
+
+// Database Connection
 const mongoUrl = 'mongodb://localhost:27017/pizza';
 mongoose.connect(mongoUrl);
 
@@ -31,7 +29,7 @@ connection.on('error', (err) => {
 });
 
 
-// -------------------- Session Configuration --------------------
+// Session Configuration 
 app.use(session({
   secret: process.env.COOKIE_SECRET || 'default_secret',
   resave: false,
@@ -54,42 +52,44 @@ const eventEmitter = new Emitter();
 app.set('eventEmitter', eventEmitter);
 
 
-// -------------------- Flash Messages --------------------
+//Flash Messages
 app.use(flash());
 
 
-// -------------------- Static Files --------------------
+
+
+//Static Files
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-// Global Middleware
+
 app.use((req, res, next) => {
   res.locals.session = req.session;
   res.locals.user = req.user;
   next();
 });
 
-// -------------------- Set Template Engine --------------------
+
 app.use(expressLayout);
 app.set('views', path.join(__dirname, '/resources/views'));
 app.set('view engine', 'ejs');
 
-// -------------------- Routes --------------------
+
 const initRoutes = require('./routes/web.js');
 initRoutes(app);
 
 
-// -------------------- Start Server --------------------
+// Start Server 
 const server = app.listen(PORT , () => {
             console.log(`Listening on port ${PORT}`)
         })
 
-// Socket
 
+// Socket
 const io = require('socket.io')(server)
 io.on('connection', (socket) => {
-      // Join
+      
       socket.on('join', (orderId) => {
         socket.join(orderId)
       })

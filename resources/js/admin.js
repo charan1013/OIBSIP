@@ -16,7 +16,7 @@ export const initAdmin = (socket) => {
         markup = generateMarkup(orders)
         orderTableBody.innerHTML = markup
     }).catch(err => {
-        console.log(err)
+        console.log(erra)
     })
 
     const renderItems = (items) => {
