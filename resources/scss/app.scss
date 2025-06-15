@@ -6,19 +6,42 @@
 
 body{
     font-family: 'Lato',sans-serif;
-
+       
     -webkit-font-smoothing: antialiased;
 
     color: $dark;
     height: 1000px;
 }
+// @media (min-width: 768px) {
+//   body {
+//     padding-left: 2rem; 
+//     padding-right: 2rem;
+//   }
+// }
+
+
+
+
 nav {
   background-color: $secondary;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); 
   z-index: 1000; 
   position: relative;
   transition: box-shadow 0.3s ease-in-out;
+   padding-left: 1rem;   /* 16px padding on left for mobile */
+  padding-right: 1rem
 }
+
+@media (min-width: 768px) {
+  nav {
+    padding-left: 2rem;   /* 32px padding for tablet and above */
+    padding-right: 2rem;
+  }
+}
+
+
+
+
 nav li:last-child a {
   background:  #FFFFFF;
 }
